@@ -1,7 +1,6 @@
 require 'open-uri'
 require 'json'
 require 'csv'
-require 'byebug'
 
 def prefix(pre, array_or_element)
   return [pre, array_or_element].join('.') if !array_or_element.instance_of? Array
