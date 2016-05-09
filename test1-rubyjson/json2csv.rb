@@ -1,13 +1,30 @@
 require 'open-uri'
 require 'json'
 require 'csv'
+require 'byebug'
+
+def prefix(pre, array_or_element)
+  return [pre, array_or_element].join('.') if !array_or_element.instance_of? Array
+  array_or_element.map { |a_e| prefix(pre, a_e) }
+end
+
+def labels(hash_or_item)
+  return nil unless hash_or_item.instance_of? Hash
+  hash_or_item.map do |key, value|
+    if value.instance_of? Hash
+      labels(value).map { |v| prefix(key, v) }
+    else
+      key
+    end
+  end
+end
 
 def json2csv(file_path, output)
   json = JSON.parse(open(file_path).read())
-  json_headers = json[0].keys
+  json_headers = json.map { |e| labels(e) }.flatten.uniq
   p json_headers
   CSV.open(output, 'wb', col_sep: ";") do |csv|
-    csv << json_headers
+    csv << [json_headers]
   end
 end
 
