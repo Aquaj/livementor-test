@@ -18,12 +18,23 @@ def labels(hash_or_item)
   end
 end
 
+def get_value(json, key)
+  temp = key
+    .split('.')
+    .reduce(json) { |hash, k| hash[k] }
+  [temp].join(",")
+end
+
 def json2csv(file_path, output)
   json = JSON.parse(open(file_path).read())
   json_headers = json.map { |e| labels(e) }.flatten.uniq
-  p json_headers
   CSV.open(output, 'wb', col_sep: ";") do |csv|
-    csv << [json_headers]
+    csv << json_headers
+    json.each do |item|
+      csv << json_headers.map do |key|
+        get_value(item, key)
+      end
+    end
   end
 end
 
