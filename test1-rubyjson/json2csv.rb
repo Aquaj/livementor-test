@@ -4,8 +4,10 @@ require 'csv'
 
 def json2csv(file_path, output)
   json = JSON.parse(open(file_path).read())
+  json_headers = json[0].keys
+  p json_headers
   CSV.open(output, 'wb', col_sep: ";") do |csv|
-    csv << json.to_a
+    csv << json_headers
   end
 end
 
