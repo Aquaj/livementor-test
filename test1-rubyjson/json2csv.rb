@@ -67,7 +67,10 @@ def json2csv(file_path, output)
   end
 end
 
+# Allows to use from command-line w/o messing up the testing that imports it.
 if __FILE__ == $0
+  # Default parameters in case none are provided.
+  # (Example: on build in IDE)
   json  = ARGV.length > 0 ? ARGV[0] : "https://gist.githubusercontent.com/gregclermont/ca9e8abdff5dee9ba9db/raw/7b2318efcf8a7048f720bcaff2031d5467a4a2c8/users.json"
   csv   = ARGV.length > 1 ? ARGV[1] : "livementest.csv"
 
