@@ -20,13 +20,14 @@ end
 # @return [Array] an array of the labels.
 def labels(hash_or_item, separator: '.')
   return nil unless hash_or_item.instance_of? Hash
-  hash_or_item.map do |key, value|
+  label_array = hash_or_item.map do |key, value|
     if value.instance_of? Hash
-      labels(value).map { |v| prefix(key+separator, v) }
+      labels(value, separator: separator).map { |v| prefix(key.to_s+separator, v) }.flatten
     else
-      key
+      key.to_s
     end
   end
+  label_array.flatten
 end
 
 # Get the values in a possibly-nested hash from an array of keys.
